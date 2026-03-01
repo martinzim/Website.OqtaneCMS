@@ -37,6 +37,52 @@ ArtPortfolio/
   - Shared models → Oqtane.Shared
 - **Keep it simple**: Nepridávaj zbytočné abstrakcie alebo služby
 
+#### ❌ Architecture Anti-Patterns
+
+**NEPOUŽÍVAJ tieto architektúry - sú to over-engineering pre tento projekt:**
+
+- **❌ NO Clean Architecture**: 
+  - Oqtane module pattern (Client/Server/Shared) už poskytuje separation of concerns
+  - Pridávanie Domain/Application/Infrastructure layers je duplicitná abstrakcia
+  - Pre portfólio aplikáciu s galériu, profilom a commission systémom to je zbytočná komplexita
+
+- **❌ NO CQRS/MediatR**: 
+  - Pre jednoduchú CRUD logiku je to overkill
+  - Oqtane Manager + Controller pattern je dostatočný
+  - CQRS má zmysel len pri high-traffic enterprise apps s complex domain logic
+
+- **❌ NO Generic Repositories**: 
+  ```csharp
+  // ❌ BAD - Generic repository wrapper
+  public class Repository<T> : IRepository<T> { ... }
+
+  // ✅ GOOD - Používaj Oqtane ISqlDatabase priamo
+  public class GalleryRepository : IGalleryRepository
+  {
+      private readonly ISqlDatabase _db;
+      public async Task<Gallery> GetAsync(int id) 
+          => await _db.GetItemAsync<Gallery>(id);
+  }
+  ```
+
+- **❌ NO Additional abstraction layers**: 
+  - Client/Server/Shared je tri-tier architecture - to stačí
+  - Nepridávaj ďalšie vrstvy medzi Controller → Manager → Repository
+  - Každá vrstva musí mať jasný dôvod existencie
+
+- **❌ NO Domain-Driven Design (DDD)**:
+  - Value objects, Aggregates, Domain Events sú pre tento projekt overkill
+  - Gallery, ArtistProfile, Commission sú jednoduché entity, nie complex aggregates
+  - Používaj Oqtane Shared models ako simple DTOs/POCOs
+
+**Kedy zvážiť komplexnejšiu architektúru:**
+- ✅ Aplikácia rastie na 100+ modulov (enterprise scale)
+- ✅ Potrebuješ multiple UI frontends (Web + Native Mobile App + Desktop)
+- ✅ Komplexná invariant-rich domain logic (napr. financial calculations, workflow engines)
+- ✅ Microservices s distributed transactions
+
+**Pre digitálne portfólio ilustrátora TOTO NEPLATÍ. Drž sa Oqtane patterns.**
+
 ### 2. Oqtane Specific Guidelines
 
 #### Module Development

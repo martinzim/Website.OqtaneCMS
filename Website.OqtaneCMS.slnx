@@ -1,0 +1,6 @@
+<Solution>
+  <Folder Name="/Solution Items/" />
+  <Project Path="Website.OqtaneCMS.AppHost/Website.OqtaneCMS.AppHost.csproj" />
+  <Project Path="Website.OqtaneCMS.ServiceDefaults/Website.OqtaneCMS.ServiceDefaults.csproj" />
+  <Project Path="Website.OqtaneCMS.Web/Website.OqtaneCMS.Web.csproj" />
+</Solution>

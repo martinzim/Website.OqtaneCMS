@@ -1,6 +1,0 @@
-<Solution>
-  <Folder Name="/Solution Items/" />
-  <Project Path="ArtPortfolio.AppHost/ArtPortfolio.AppHost.csproj" />
-  <Project Path="ArtPortfolio.ServiceDefaults/ArtPortfolio.ServiceDefaults.csproj" />
-  <Project Path="ArtPortfolio.Web/ArtPortfolio.Web.csproj" />
-</Solution>

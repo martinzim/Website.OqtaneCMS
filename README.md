@@ -1,12 +1,12 @@
-# ArtPortfolio
+# Website.OqtaneCMS
 
-Webové portfólio pre digitálneho ilustrátora postavené na **Oqtane CMS** a **.NET 10 Blazor Server**.
+**Oqtane CMS** + **.NET 10 Blazor Server**.
 
 ## 🚀 Technológie
 
 - **.NET 10** (C# 14.0)
 - **Blazor Server** (interactive server-side rendering)
-- **Oqtane CMS 10.0.3** (headless/integrated CMS)
+- **Oqtane CMS 10.0.4** (headless/integrated CMS)
 - **.NET Aspire 13.0** (local development orchestration)
 - **PostgreSQL** (lokálne + Azure Database for PostgreSQL Flexible Server)
 - **Azure Container Apps** (production deployment target)
@@ -14,90 +14,116 @@ Webové portfólio pre digitálneho ilustrátora postavené na **Oqtane CMS** a 
 ## 📁 Štruktúra projektu
 
 ```
-ArtPortfolio/
-├── ArtPortfolio.Web/           # Hlavná Blazor Server aplikácia s Oqtane
-├── ArtPortfolio.AppHost/        # Aspire orchestration host
-├── ArtPortfolio.ServiceDefaults/ # Zdieľané predvoľby služieb (telemetria, kontrola stavu)
-└── docs/                        # Dokumentácia
-    ├── AZURE_POSTGRESQL.md      # Sprievodca nastavením Azure databázy
-    ├── POSTGRESQL.md            # Konfigurácia PostgreSQL
-    └── MODULE_DEVELOPMENT.md    # Sprievodca vývojom Oqtane modulov
+Website.OqtaneCMS/
+├── Website.OqtaneCMS.Web/              # Hlavná Blazor Server aplikácia s Oqtane
+├── Website.OqtaneCMS.AppHost/          # Aspire orchestration host
+├── Website.OqtaneCMS.ServiceDefaults/  # Zdieľané predvoľby služieb (telemetria, kontrola stavu)
+├── docs/                               # Dokumentácia
+│   ├── OQTANE_SETUP.md                 # 📘 Kompletný sprievodca inštaláciou
+│   ├── AZURE_POSTGRESQL.md             # Sprievodca nastavením Azure databázy
+│   ├── POSTGRESQL.md                   # Konfigurácia PostgreSQL
+│   └── MODULE_DEVELOPMENT.md           # Sprievodca vývojom Oqtane modulov
+└── start-dev.ps1                       # 🚀 Quick start skript
 ```
 
-## 🛠️ Prvotné nastavenie
+## ⚡ Rýchly Štart
 
 ### Požiadavky
 
-- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- [Docker Desktop](https://www.docker.com/products/docker-desktop) (pre PostgreSQL container)
-- [Visual Studio 2025](https://visualstudio.microsoft.com/) alebo [Visual Studio Code](https://code.visualstudio.com/)
-- [.NET Aspire Workload](https://learn.microsoft.com/dotnet/aspire/fundamentals/setup-tooling)
+- ✅ [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+- ✅ [Docker Desktop](https://www.docker.com/products/docker-desktop) **(musí byť spustený!)**
+- ✅ [Visual Studio 2026](https://visualstudio.microsoft.com/) alebo [Visual Studio Code](https://code.visualstudio.com/)
 
-### Inštalácia .NET Aspire
+### 1-Click Start (Odporúčané)
 
-```bash
-dotnet workload update
-dotnet workload install aspire
+```powershell
+# Windows PowerShell
+.\start-dev.ps1
 ```
 
-### Konfigurácia databázy (PostgreSQL)
-
-```bash
-cd ArtPortfolio.AppHost
-dotnet user-secrets init
-dotnet user-secrets set "Parameters:pg-username" "postgres"
-dotnet user-secrets set "Parameters:pg-password" "YourSecurePassword123!"
-```
-
-## 🚀 Spustenie aplikácie
-
-### Lokálny vývoj (s Aspire + PostgreSQL)
+**Alebo manuálne:**
 
 ```bash
 # Spustenie cez Aspire orchestráciu
-dotnet run --project ArtPortfolio.AppHost
+dotnet run --project Website.OqtaneCMS.AppHost
 ```
 
-Aspire automaticky:
-- Spustí PostgreSQL Docker container
-- Vytvorí databázu `oqtane`
-- Spustí pgAdmin na http://localhost:60751
-- Spustí web aplikáciu
-- Otvorí Aspire dashboard
+### Čo sa stane?
 
-### Priame spustenie (bez Aspire)
+1. 🐳 Aspire stiahne a spustí PostgreSQL container
+2. 🗄️ Vytvorí databázu `OqtaneCMS`
+3. 🛠️ Spustí pgAdmin na `http://localhost:60751`
+4. 🌐 Spustí Website.OqtaneCMS.Web
+5. 📊 Otvorí Aspire Dashboard
 
-```bash
-cd ArtPortfolio.Web
-dotnet run
+### Prvé Prihlásenie
+
+1. **Otvor aplikáciu** (URL sa zobrazí v Aspire Dashboard)
+2. **Oqtane Installation Wizard** sa spustí automaticky
+3. **Databáza:** Už nakonfigurovaná! ✅
+4. **Vytvor admin účet:**
+   - Username: `admin`
+   - Password: [tvoje silné heslo]
+   - Email: `admin@email.com`
+5. **Site Name:** `Website.OqtaneCMS`
+6. **Klikni Install** 🎉
+
+**✨ Hotovo! Oqtane je pripravený.**
+
+📖 **Podrobné inštrukcie:** `docs/OQTANE_SETUP.md`
+
+## 🛠️ Vývoj
+
+### Konfigurácia databázy
+
+**Default credentials (lokálny vývoj):**
+- Username: `oqtane`
+- Password: `OqtaneDevPassword123!`
+
+**Zmena hesla:**
+
+```json
+// Website.OqtaneCMS.AppHost/appsettings.Development.json
+{
+  "Parameters": {
+    "pg-username": "oqtane",
+    "pg-password": "StrongPassword123!"
+  }
+}
 ```
 
-⚠️ **Poznámka**: Budete potrebovať manuálne nastaviť PostgreSQL connection string v `appsettings.Development.json`
+### pgAdmin Prístup
+
+**URL:** `http://localhost:60751`
+- Email: `admin@admin.com`
+- Password: `admin`
+
+### Aspire Dashboard
+
+- 📊 Metrics & Logs
+- 🔍 Distributed Tracing
+- ⚙️ Environment Variables
+- 📈 Performance Monitoring
 
 ## 📝 Prvotná inštalácia Oqtane
 
 Pri prvom spustení sa automaticky spustí **Oqtane Installation Wizard**:
 
 1. Otvorte aplikáciu v prehliadači
-2. Vyberte **Database Type**: **PostgreSQL**
-3. Connection string bude už predvyplnený (z Aspire)
-4. Vytvorte **Admin účet**:
-   - Username
-   - Password
-   - Email
-5. Zadajte **Site Name**: napr. "Art Portfolio"
+2. **Database Type**: **PostgreSQL** ✅ (automaticky)
+3. **Connection String**: ✅ (injektovaný cez Aspire)
+4. Vytvorte **Admin účet**
+5. **Site Name**: napr. "Website.OqtaneCMS"
 6. Kliknite na **Install**
 
 Po inštalácii sa vytvorí:
-- PostgreSQL databázová schéma
-- `Content/Tenants/Default/` - súbory pre default tenant
-- `wwwroot/Modules/` - Oqtane moduly
-- `wwwroot/Themes/` - Oqtane témy
+- PostgreSQL databázová schéma (50+ tabuliek)
+- Default homepage so sample obsahom
+- Admin panel pre správu obsahu
 
-⚠️ **Dôležité**: Po úspešnej inštalácii zmeňte v `appsettings.json`:
-```json
-"Installation": {
-  "InstallationMode": "None"
+⚠️ **Po inštalácii:** Reštartuj aplikáciu (Ctrl+C → `dotnet run`)
+
+📖 **Detailný návod:** `docs/OQTANE_SETUP.md`
 }
 ```
 
@@ -163,12 +189,12 @@ Pozri dokumentáciu v [docs/MODULE_DEVELOPMENT.md](docs/MODULE_DEVELOPMENT.md) p
 
 ```bash
 # Build container image
-docker build -t artportfolio-web:latest -f ArtPortfolio.Web/Dockerfile .
+docker build -t website-oqtanecms-web:latest -f Website.OqtaneCMS.Web/Dockerfile .
 
 # Push to Azure Container Registry
 az acr login --name yourregistry
-docker tag artportfolio-web:latest yourregistry.azurecr.io/artportfolio-web:latest
-docker push yourregistry.azurecr.io/artportfolio-web:latest
+docker tag website-oqtanecms-web:latest yourregistry.azurecr.io/website-oqtanecms-web:latest
+docker push yourregistry.azurecr.io/website-oqtanecms-web:latest
 ```
 
 📚 **Azure deployment guide**: [docs/AZURE_POSTGRESQL.md](docs/AZURE_POSTGRESQL.md)
@@ -206,12 +232,8 @@ Pridať server:
 - **Username**: postgres
 - **Password**: (vaše heslo z user secrets)
 
-## 📄 Licencia
-
-Proprietárne - všetky práva vyhradené.
-
 ---
 
 **Version**: 1.0.0  
-**Created**: 2025  
+**Created**: 2026  
 **Framework**: .NET 10 | Oqtane 10.0.3 | PostgreSQL 16
